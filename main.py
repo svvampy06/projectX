@@ -73,3 +73,13 @@ async def on_startup():
 async def on_shutdown():
     await database.disconnect()
     logger.info("Application shutdown complete")
+
+# main.py
+@app.get("/")
+async def root():
+    return {"message": "API is running", "endpoints": [
+        "/api/users",
+        "/api/messages",
+        "/api/users/{user_id}/messages",
+        "/api/conversation/{user1_id}/{user2_id}"
+    ]}

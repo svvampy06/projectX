@@ -18,11 +18,24 @@ router = APIRouter()
 class UserCreate(BaseModel):
     name: str
 
+from uuid import UUID
+from pydantic import BaseModel
+from datetime import datetime
+from typing import Optional
+
 class UserOut(BaseModel):
-    id: str
+    id: UUID  # изменено с str на UUID
     name: str
     created_at: datetime
     last_login: Optional[datetime] = None
+
+class MessageOut(BaseModel):
+    id: UUID
+    text: str
+    sender_id: Optional[UUID]  # изменено с str на UUID
+    recipient_id: Optional[UUID]  # изменено с str на UUID
+    send_time: datetime
+    readed_at: Optional[datetime] = None
 
 class MessageCreate(BaseModel):
     text: str

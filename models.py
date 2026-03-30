@@ -1,31 +1,29 @@
 # models.py
-from sqlalchemy import create_engine, Table, Column, String, Text, MetaData, DateTime, ForeignKey
+from sqlalchemy import UUID, create_engine, Table, Column, String, Text, MetaData, DateTime, ForeignKey
 from sqlalchemy.sql import func
 import uuid
+# models.py
 import os
 
-DB_USER = "postgres"  # или ваш реальный пользователь
-DB_PASSWORD = "supersecret"  # ваш реальный пароль
-DB_HOST = "postgres"
-DB_PORT = "5432"
-DB_NAME = "projector"
+# Используйте переменные окружения или правильные значения для Docker
+DB_USER = os.getenv("DB_USERNAME", "postgres")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "supersecret")
+DB_HOST = os.getenv("DB_HOST", "postgres")  # В Docker это "postgres", не localhost
+DB_PORT = os.getenv("DB_PORT", "5432")
+DB_NAME = os.getenv("DB_NAME", "projector")
 
-DATABASE_URL = "postgresql://username:password@localhost:5432/messenger_db"
+DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-# Если вы используете переменные окружения
-# DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/messenger_db")
-
-# Создаем engine для PostgreSQL
 engine = create_engine(DATABASE_URL, echo=True, pool_size=10, max_overflow=20)
 
-# Создаем metadata
+
 metadata = MetaData()
 
-# Определение таблицы users
+
 users = Table(
     "users",
     metadata,
-    Column("id", String(36), primary_key=True, default=lambda: str(uuid.uuid4())),
+    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
     Column("name", String(255), nullable=False),
     Column("created_at", DateTime(timezone=True), server_default=func.now(), nullable=False),
     Column("last_login", DateTime(timezone=True), nullable=True),
