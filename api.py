@@ -42,14 +42,6 @@ class MessageCreate(BaseModel):
     sender_id: str
     recipient_id: str
 
-class MessageOut(BaseModel):
-    id: str
-    text: str
-    sender_id: Optional[str]
-    recipient_id: Optional[str]
-    send_time: datetime
-    readed_at: Optional[datetime] = None
-
 # Эндпоинты для пользователей
 @router.post(
     "/api/users",

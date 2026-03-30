@@ -29,7 +29,7 @@ users = Table(
     Column("last_login", DateTime(timezone=True), nullable=True),
 )
 
-# Определение таблицы messages
+# Исправленное определение таблицы messages
 messages = Table(
     "messages",
     metadata,
