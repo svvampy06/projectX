@@ -1,7 +1,8 @@
 from typing import List, Dict, Optional
 import logging
 from datetime import datetime
-import uuid  # Добавьте эту строку
+import uuid
+from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Query, Depends
 from sqlalchemy import select, or_
@@ -18,13 +19,8 @@ router = APIRouter()
 class UserCreate(BaseModel):
     name: str
 
-from uuid import UUID
-from pydantic import BaseModel
-from datetime import datetime
-from typing import Optional
-
 class UserOut(BaseModel):
-    id: UUID  # изменено с str на UUID
+    id: UUID
     name: str
     created_at: datetime
     last_login: Optional[datetime] = None
@@ -32,8 +28,8 @@ class UserOut(BaseModel):
 class MessageOut(BaseModel):
     id: UUID
     text: str
-    sender_id: Optional[UUID]  # изменено с str на UUID
-    recipient_id: Optional[UUID]  # изменено с str на UUID
+    sender_id: Optional[UUID]
+    recipient_id: Optional[UUID]
     send_time: datetime
     readed_at: Optional[datetime] = None
 
