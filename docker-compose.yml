@@ -1,4 +1,24 @@
 services:
+  projector:
+    container_name: projector
+    ports:
+      - "8000:8000"
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: "postgres"
+      DB_PORT: 5432
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "supersecret"
+      DB_NAME: "projector"
+      GITLAB_API_URL: "https://gitlab.wildberries.ru/api/v4"
+      GITLAB_TOKEN: ""
+
+
   postgres:
     container_name: postgres
     image: postgres:15
