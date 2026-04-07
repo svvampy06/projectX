@@ -1,0 +1,35 @@
+services:
+  projector:
+    container_name: projector
+    ports:
+      - "8000:8000"
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: "postgres"
+      DB_PORT: 5432
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "supersecret"
+      DB_NAME: "projector"
+
+
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: projector
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecret
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
